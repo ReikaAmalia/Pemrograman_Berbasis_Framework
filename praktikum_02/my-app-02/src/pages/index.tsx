@@ -1,15 +1,18 @@
-import Link from "next/link";
+// import Link from "next/link";
+import Head from 'next/head'
+import Image from "next/image"
+import { Inter } from 'next/font/google'
+import styles from '@/styles/Home.module.css'
+import Navbar from '@/components/index'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Halaman Utama</h1>
+    <div>
 
-      <p>Selamat datang di praktikum Next.js</p>
-
-      <Link href="/about">
-        <button>Lihat Halaman About</button>
-      </Link>
+      <h1>Praktikum Next.js Pages Router</h1>
+      <p>Mahasiswa D4 Pengembangan Web </p>
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 
 const HalamanProduk = () => {
-  const router = useRouter();
-  console.log(router);  
+  // const Router = useRouter();
+  // console.log(Router);  
+  const { query } = useRouter();
 
   return (
     <div>
       <h1>Halaman Produk</h1>
-      <p>Produk:</p>
+      <p>Produk: {query.id}</p>
     </div>
   );
 };
