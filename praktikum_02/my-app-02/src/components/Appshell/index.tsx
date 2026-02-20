@@ -10,8 +10,11 @@ const AppShell = (props:AppShellProps) => {
         <main>
         <Navbar />
         {children}
+        <footer style={{ marginTop: "20px" }}>
+            <hr />
+            <p> © 2026 - Praktikum Next.js</p>
+        </footer>
         <div>
-            footer
         </div>
         </main>
     );
