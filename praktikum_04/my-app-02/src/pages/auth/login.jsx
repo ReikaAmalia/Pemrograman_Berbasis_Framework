@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 const halamanLogin = () => {
     const {push} = useRouter();
     const handleLogin = () => {
+        // Simpan status login
+        localStorage.setItem("isLogin", "true");
+
         // logic login disini
         push("/produk");
     }
