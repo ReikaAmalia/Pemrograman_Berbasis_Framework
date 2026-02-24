@@ -11,9 +11,14 @@ const halamanLogin = () => {
         <div>
 
             <h1>Halaman Login</h1>
+            
             {/* <button onClick={handleLogin}>Login</button> <br /> */}
             {/* <button onClick={() => push('/produk')}>Login</button> <br /> */}
+
+            {/* Navigasi Imperatif */}
             <button onClick={() => handleLogin()}>Login</button> <br />
+
+            {/* Navigasi Link */}
             <Link href="/auth/register">Ke Halaman Register</Link>
         </div>
     );
