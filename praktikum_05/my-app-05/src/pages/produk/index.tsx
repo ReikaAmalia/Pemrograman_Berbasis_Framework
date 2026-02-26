@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import TampilanProduk from "@/views/produk";
 
-const produk = () => {
+const ProdukPage = () => {
 
     const { push } = useRouter();
 
@@ -16,9 +17,9 @@ const produk = () => {
 
     return (
         <div>
-            Produk User Page
+            <TampilanProduk />
         </div>
     );
 };
 
-export default produk;
+export default ProdukPage;
