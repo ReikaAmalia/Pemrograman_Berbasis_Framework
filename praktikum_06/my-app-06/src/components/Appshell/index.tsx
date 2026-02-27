@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import { useRouter } from "next/router";
 
+// Daftar path yang tidak menampilkan Navbar
 const disableNavbar = ["/auth/login", "/auth/register", "/404"];
 type AppShellProps = {
     children: React.ReactNode;
