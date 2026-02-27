@@ -1,5 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/404.module.scss";
+// TUGAS 3: KEMBALI KE HOME
+import Link from "next/link";
 
 const Custom404 = () => {
   return (
@@ -26,6 +28,14 @@ const Custom404 = () => {
           alt="Halaman tidak ditemukan"
           className={styles.error_image}
         />
+
+    {/* TUGAS 3: TOMBOL KEMBALI KE HOME */}
+        <Link href="/">
+        <button className={styles.back_button}>
+            Kembali ke Home
+        </button>
+        </Link>
+
       </div>
     </>
   );

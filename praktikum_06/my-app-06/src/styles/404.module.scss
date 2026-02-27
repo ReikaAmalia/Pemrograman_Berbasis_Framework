@@ -26,3 +26,18 @@
 .error_image {
   width: 300px;
 }
+
+.back_button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back_button:hover {
+  background-color: #1e40af;
+}
