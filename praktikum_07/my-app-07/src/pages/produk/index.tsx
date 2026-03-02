@@ -7,6 +7,7 @@ type ProductType = {
     name: string;
     price: number;
     size: string;
+    category: string;
 }
 
 const kategori = () => {
@@ -23,26 +24,35 @@ const kategori = () => {
     //     }
     // }, []);
 
-    useEffect(() => {
-        fetch("/api/produk")
-            .then((response) => response.json())
-            .then((responsdata) => {
-                //console.log("Data produk:", responsdata.data);
-                setProducts(responsdata.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching produk:", error);
-            });
-    }, []);
+    const fetchProducts = () => {
+    fetch("/api/produk")
+      .then((response) => response.json())
+      .then((responsdata) => {
+        setProducts(responsdata.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching produk:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
     return (
         <div>
         <h1>Daftar Produk</h1>
+
+        <button onClick={fetchProducts}>
+        Refresh Data
+        </button>
+
         {products.map((products: ProductType) => (
             <div key={products.id}>
                 <h2>{products.name}</h2>
                 <p>Harga: Rp {products.price}</p>
                 <p>Ukuran: {products.size}</p>
+                <p>Kategori: {products.category}</p>
             </div>
         ))}
         </div>
