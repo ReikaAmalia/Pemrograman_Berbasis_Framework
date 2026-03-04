@@ -23,13 +23,6 @@ const TampilanProduk = ({ products, isLoading, }: { products: ProductType[]; isL
               <div className={styles.produk__content__skeleton__category}></div>
               <div className={styles.produk__content__skeleton__price}></div>
             </div>
-
-            <div className={styles.produk__content__skeleton}>
-              <div className={styles.produk__content__skeleton__image}></div>
-              <div className={styles.produk__content__skeleton__name}></div>
-              <div className={styles.produk__content__skeleton__category}></div>
-              <div className={styles.produk__content__skeleton__price}></div>
-            </div>
           </>
         ) : (
           products.map((product: ProductType) => (
@@ -54,7 +47,7 @@ const TampilanProduk = ({ products, isLoading, }: { products: ProductType[]; isL
               </p>
 
               <p className={styles.produk__content__item__price}>
-                Rp {product.price.toLocaleString()}
+                Rp {product.price.toLocaleString("id-ID")}
               </p>
             </div>
           ))
