@@ -1,4 +1,5 @@
 import styles from "../../styles/product.module.scss";
+import Link from "next/link";
 
 type ProductType = {
   id: string;
@@ -26,6 +27,7 @@ const TampilanProduk = ({ products, isLoading, }: { products: ProductType[]; isL
           </>
         ) : (
           products.map((product: ProductType) => (
+            <Link href={`/produk/${product.id}`} key={product.id} className={styles.produk__content__item}>
             <div
               key={product.id}
               className={styles.produk__content__item}
@@ -50,6 +52,7 @@ const TampilanProduk = ({ products, isLoading, }: { products: ProductType[]; isL
                 Rp {product.price.toLocaleString("id-ID")}
               </p>
             </div>
+            </Link>
           ))
         )}
 
