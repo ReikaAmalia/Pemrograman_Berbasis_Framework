@@ -7,7 +7,7 @@ const TampilanLogin = () => {
     const {push} = useRouter();
     const handleLogin = () => {
         // Simpan status login
-        localStorage.setItem("isLogin", "true");
+         document.cookie = "isLogin=true; path=/";
 
         // logic login disini
         push("/produk");
