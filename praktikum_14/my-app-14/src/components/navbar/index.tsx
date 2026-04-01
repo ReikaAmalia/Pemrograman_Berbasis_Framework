@@ -15,7 +15,7 @@ const Navbar = () => {
         {data ? (
           <>
             <div className={styles.navbar__user}>
-              Welcome, {data.user?.fullname}
+              Welcome, {data.user?.fullname} {/* show full name  */}
             </div>
             <button
               className={`${styles.navbar__button} ${styles["navbar__button--danger"]}`}

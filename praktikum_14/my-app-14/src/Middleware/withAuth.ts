@@ -15,7 +15,8 @@ export default function withAuth(
       });
       if (!token) {
         const loginUrl = new URL("/auth/login", req.url);
-        return NextResponse.redirect(loginUrl);
+        return NextResponse.redirect(loginUrl); 
+        // perlindungan untuk halaman yang membutuhkan autentikasi, jika tidak ada token maka akan diarahkan ke halaman login menggunakan middleware
       }
     }
     return middleware(req, next);

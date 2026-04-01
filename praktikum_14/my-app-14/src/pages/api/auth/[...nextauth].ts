@@ -8,6 +8,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   providers: [
+    // credentials provider untuk login
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
           id: "1",
           email: credentials?.email,
           password: credentials?.password,
-          fullname: credentials?.fullname,
+          fullname: credentials?.fullname, // field full name
         };
         if (user) {
           return user;
