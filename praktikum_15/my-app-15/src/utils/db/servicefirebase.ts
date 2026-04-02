@@ -48,8 +48,8 @@ export async function signUp(
   );
   const querySnapshot = await getDocs(q);
   const data = querySnapshot.docs.map((doc) => ({
-    // id: doc.id,
-    // ...doc.data(),
+    id: doc.id,
+    ...doc.data(),
   }));
 
   if (data.length > 0) 
