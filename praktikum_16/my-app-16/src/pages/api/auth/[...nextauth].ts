@@ -55,7 +55,12 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     }
-  }
+  },
+
+  // pengarah sign in ke halaman login
+  pages: {
+    signIn: "/auth/login",
+  },
 };
 
 export default NextAuth(authOptions);
