@@ -9,30 +9,36 @@ import {
   where,
 } from "firebase/firestore";
 import app from "./firebase";
+import bcrypt from "bcrypt";
 
 const db = getFirestore(app);
 
 export async function retrieveProducts(collectionName: string) {
-  const snapshot = await getDocs(collection(db, collectionName));
-  const data = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return data;
+
+  // const snapshot = await getDocs(collection(db, collectionName));
+  // const data = snapshot.docs.map((doc) => ({
+  //   id: doc.id,
+  //   ...doc.data(),
+  // }));
+  // return data;
 }
 
 export async function retrieveDataByID(collectionName: string, id: string) {
-  const snapshot = await getDoc(doc(db, collectionName, id));
-  const data = snapshot.data();
-  return data;
 }
+
+// export async function retrieveDataByID(collectionName: string, id: string) {
+//   const snapshot = await getDoc(doc(db, collectionName, id));
+//   const data = snapshot.data();
+//   return data;
+// }
 
 export async function signUp(
   userData: {
     email: string;
     fullname: string;
     password: string;
-  },
+    role?: string;
+},
   callback: Function,
 ) {
   
@@ -42,22 +48,31 @@ export async function signUp(
   );
   const querySnapshot = await getDocs(q);
   const data = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
+    // id: doc.id,
+    // ...doc.data(),
   }));
 
-  if (data.length > 0) {
-    // user sudah ada -> tidak boleh daftar
+  if (data.length > 0) 
+    {
     callback({
       status: "error",
-      message: "User already exists",
+      message: "Email already exists",
     });
-  } else {
-    // user belum ada -> boleh daftar
-    await addDoc(collection(db, "users"), userData);
-    callback({
-      status: "success",
-      message: "User registered successfully",
-    });
+    } else {
+      userData.password = await bcrypt.hash(userData.password, 10);
+      userData.role = "user";
+      await addDoc(collection(db, "users"), userData)
+        .then(() => {
+          callback({
+            status: "success",
+            message: "User registered successfully",
+          });
+        })
+        .catch((error) => {
+          callback({
+            status: "error",
+            message: error.message,
+          });
+        });
   }
-} 
+}
