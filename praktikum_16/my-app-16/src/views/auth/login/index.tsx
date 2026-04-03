@@ -45,6 +45,7 @@ const TampilanLogin = () => {
 };
   
   return (
+    <>
     <div className={style.login}>
       {/* modifikasi line 41 */}
       {error && <p className={style.login__form__error}>{error}</p>}
@@ -125,6 +126,7 @@ const TampilanLogin = () => {
       {/* Form selesai disini */}
 
     </div>
+    </>
   );
 };
 

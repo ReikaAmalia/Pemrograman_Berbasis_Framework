@@ -43,16 +43,17 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      return `${baseUrl}/profile`;
-    },
+    // async redirect({ url, baseUrl }) {
+    //   if (url.startsWith(baseUrl)) return url;
+    //   if (url.startsWith("/")) return `${baseUrl}${url}`;
+    //   return `${baseUrl}/profile`;
+    // },
 
     async jwt({ token, account, profile, user }: any) {
       if (account?.provider === "credentials" && user) {
         token.email = user.email;
         token.fullname = user.fullname;
+        token.role = user.role;
       }
       return token;
     },
@@ -63,8 +64,11 @@ export const authOptions: NextAuthOptions = {
       if (token.fullname) {
         session.user.fullname = token.fullname;
       }
+      if (token.role) {
+        session.user.role = token.role;
+      }
       return session;
-    }
+    },
   },
 
   // pengarah sign in ke halaman login
