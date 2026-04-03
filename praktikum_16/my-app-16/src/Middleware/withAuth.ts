@@ -14,11 +14,12 @@ export default function withAuth(
         secret: process.env.NEXTAUTH_SECRET,
       });
       if (!token) {
-        const loginUrl = new URL("/auth/login", req.url);
-        return NextResponse.redirect(loginUrl); 
+        const Url = new URL("/auth/login", req.url);
+        Url.searchParams.set("callbackUrl", encodeURI(req.url));
+        return NextResponse.redirect(Url); 
         // perlindungan untuk halaman yang membutuhkan autentikasi, jika tidak ada token maka akan diarahkan ke halaman login menggunakan middleware
       }
     }
     return middleware(req, next);
-  };
+  }
 }
