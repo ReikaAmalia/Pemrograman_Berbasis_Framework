@@ -9,7 +9,7 @@ type ProductType = {
   category: string;
 };
 
-const TampilanProduk = ({ products }: { products: ProductType[] }) => {
+const TampilanProduk = ({ products = [] }: { products: ProductType[] }) => {
   return (
     <div className={styles.produk}>
       <h1 className={styles.produk__title}>Daftar Produk</h1>

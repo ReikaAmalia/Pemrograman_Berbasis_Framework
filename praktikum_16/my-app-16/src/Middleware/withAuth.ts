@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/server";
 
+const hanyaAdmin = ["/admin"];
 export default function withAuth(
   middleware: NextMiddleware,
   requireAuth: string[] = [],
@@ -19,7 +20,10 @@ export default function withAuth(
         return NextResponse.redirect(Url); 
         // perlindungan untuk halaman yang membutuhkan autentikasi, jika tidak ada token maka akan diarahkan ke halaman login menggunakan middleware
       }
+      if (token.role !=="admin" && hanyaAdmin.includes(pathname)) {
+        return NextResponse.redirect(new URL("/", req.url));
     }
-    return middleware(req, next);
   }
+    return middleware(req, next);
+  };
 }
