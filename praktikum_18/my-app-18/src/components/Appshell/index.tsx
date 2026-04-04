@@ -1,34 +1,35 @@
-import Navbar from "@/components/navbar";
 import { useRouter } from "next/router";
 import { Roboto } from "next/font/google";
+import dynamic from "next/dynamic";
 
-// Daftar path yang tidak menampilkan Navbar
-const disableNavbar = ["/auth/login", "/auth/register", "/404"];
-type AppShellProps = {
-    children: React.ReactNode;
-}
-
-const roboto = Roboto({
-    subsets: ["latin"],
-    weight: ["400", "500", "700"],
+// Navbar dimuat secara dynamic (lazy loading)
+// artinya Navbar hanya dimuat saat dibutuhkan, bukan saat halaman pertama render
+const Navbar = dynamic(() => import("@/components/navbar"), {
+  ssr: false, // tidak dirender di server, hanya di client
+  loading: () => <div>Loading navbar...</div>,
 });
 
-const AppShell = (props:AppShellProps) => {
-    const { children } = props;
-    const { pathname } = useRouter();
-    const router = useRouter();
-    console.log(router);
-    
-    return (
-        <main className={roboto.className}>
-            {!disableNavbar.includes(pathname) && <Navbar />}
-        {children}
-        {/* <footer style={{ marginTop: "20px" }}>
-            <hr />
-            <p> © 2026 - Praktikum Next.js</p>
-        </footer> */}
-        </main>
-    );
-    };
-    
+const disableNavbar = ["/auth/login", "/auth/register", "/404"];
+
+type AppShellProps = {
+  children: React.ReactNode;
+};
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
+const AppShell = (props: AppShellProps) => {
+  const { children } = props;
+  const { pathname } = useRouter();
+
+  return (
+    <main className={roboto.className}>
+      {!disableNavbar.includes(pathname) && <Navbar />}
+      {children}
+    </main>
+  );
+};
+
 export default AppShell;
