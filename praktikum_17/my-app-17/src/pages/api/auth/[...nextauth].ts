@@ -3,6 +3,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github"; // import GitHub provider
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -11,17 +12,14 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   providers: [
-    // credentials provider untuk login
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        // fullname: { label: "Full Name", type: "text" },
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password)  return null;
-        
+        if (!credentials?.email || !credentials.password) return null;
         const user: any = await signIn(credentials.email);
         if (user) {
           const isPasswordValid = await bcrypt.compare(
@@ -29,7 +27,6 @@ export const authOptions: NextAuthOptions = {
             user.password,
           );
           if (isPasswordValid) {
-            // pastikan mmengembalikan object user yang bersih
             return {
               id: user.id,
               email: user.email,
@@ -45,14 +42,14 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
+    // GitHub provider
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID || "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+    }),
   ],
 
   callbacks: {
-    // async redirect({ url, baseUrl }) {
-    //   if (url.startsWith(baseUrl)) return url;
-    //   if (url.startsWith("/")) return `${baseUrl}${url}`;
-    //   return `${baseUrl}/profile`;
-    // },
 
     async jwt({ token, account, profile, user }: any) {
       if (account?.provider === "credentials" && user) {
@@ -61,7 +58,6 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
       }
 
-      //jika login dengan google, tambah informasi yg diperlukan ke token
       if (account?.provider === "google") {
         const data = {
           fullname: user.name,
@@ -69,41 +65,51 @@ export const authOptions: NextAuthOptions = {
           image: user.image,
           type: account.provider,
         };
-
         await signInWithGoogle(data, (result: any) => {
-          // pastikan cek result.status sesuai dengan object yang dikirim
           if (result.status) {
-          token.fullname = result.data.fullname;
-          token.email = result.data.email;
-          token.image = result.data.image;
-          token.type = result.data.type;
-        }
-      });
-    }
-    return token;
+            token.fullname = result.data.fullname;
+            token.email = result.data.email;
+            token.image = result.data.image;
+            token.type = result.data.type;
+            token.role = result.data.role; // tambahkan role
+          }
+        });
+      }
+
+      // handler untuk GitHub
+      if (account?.provider === "github") {
+        const data = {
+          fullname: user.name,
+          email: user.email,
+          image: user.image,
+          type: account.provider,
+        };
+        await signInWithGoogle(data, (result: any) => {
+          // reuse signInWithGoogle
+          if (result.status) {
+            token.fullname = result.data.fullname;
+            token.email = result.data.email;
+            token.image = result.data.image;
+            token.type = result.data.type;
+            token.role = result.data.role;
+          }
+        });
+      }
+
+      return token;
     },
-    
+
     async session({ session, token }: any) {
-      if (token.email) {
-        session.user.email = token.email;
-      }
-      if (token.fullname) {
-        session.user.fullname = token.fullname;
-      }
-      if (token.image) {
-        session.user.image = token.image;
-      }
-      if (token.role) {
-        session.user.role = token.role;
-      }
-      if (token.type) {
-        session.user.type = token.type;
-      }
+      if (token.email) session.user.email = token.email;
+      if (token.fullname) session.user.fullname = token.fullname;
+      if (token.image) session.user.image = token.image;
+      if (token.role) session.user.role = token.role;
+      if (token.type) session.user.type = token.type;
       return session;
     },
   },
 
-  // pengarah sign in ke halaman login
+
   pages: {
     signIn: "/auth/login",
   },
