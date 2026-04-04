@@ -1,9 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true, 
   images: {
-    domains: [
-      "lh3.googleusercontent.com", // Google
-      "avatars.githubusercontent.com", // GitHub
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.adidas.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/**",
+      },
     ],
   },
 };
