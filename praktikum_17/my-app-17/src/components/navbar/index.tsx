@@ -19,7 +19,8 @@ const Navbar = () => {
               {data.user.image && (
               <img
                 src={data.user.image}
-                alt={data.user.fullname}
+                alt="avatar"
+                referrerPolicy="no-referrer"
                 className={styles.navbar__user__image}
               />
             )}
