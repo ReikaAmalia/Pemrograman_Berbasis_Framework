@@ -1,6 +1,4 @@
-import Head from "next/image";
 import styles from "@/styles/404.module.scss";
-// TUGAS 3: KEMBALI KE HOME
 import Link from "next/link";
 import Image from "next/image";
 
