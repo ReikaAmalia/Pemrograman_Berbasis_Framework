@@ -7,7 +7,7 @@ import {
   query,
   addDoc,
   where,
-  updateDoc, // menyimpan perubahan data goole ke database
+  updateDoc,
 } from "firebase/firestore";
 import app from "./firebase";
 import bcrypt from "bcrypt";
@@ -29,13 +29,31 @@ export async function retrieveDataByID(collectionName: string, id: string) {
   return data;
 }
 
-export async function signIn(email: string) {
+// fungsi reusable untuk cek user by email
+// dipakai oleh signIn, signUp, dan signInWithGoogle agar tidak perlu tulis query berulang
+export async function getUserByEmail(email: string) {
   const q = query(collection(db, "users"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
+  return data;
+}
+
+// fungsi reusable untuk simpan user baru ke database
+export async function saveUser(userData: any) {
+  return await addDoc(collection(db, "users"), userData);
+}
+
+// fungsi reusable untuk update data user di database
+export async function updateUser(id: string, userData: any) {
+  return await updateDoc(doc(db, "users", id), userData);
+}
+
+export async function signIn(email: string) {
+  // refactor: pakai getUserByEmail agar tidak duplikasi query
+  const data = await getUserByEmail(email);
   if (data) {
     return data[0];
   } else {
@@ -52,16 +70,8 @@ export async function signUp(
   },
   callback: Function,
 ) {
-  
-  const q = query(
-    collection(db, "users"),
-    where("email", "==", userData.email),
-  );
-  const querySnapshot = await getDocs(q);
-  const data = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  // refactor: pakai getUserByEmail agar tidak duplikasi query
+  const data = await getUserByEmail(userData.email);
 
   if (data.length > 0) {
     callback({
@@ -71,7 +81,8 @@ export async function signUp(
   } else {
     userData.password = await bcrypt.hash(userData.password, 10);
     userData.role = "user";
-    await addDoc(collection(db, "users"), userData)
+    // refactor: pakai saveUser agar tidak duplikasi addDoc
+    await saveUser(userData)
       .then(() => {
         callback({
           status: "success",
@@ -90,22 +101,14 @@ export async function signUp(
 // fungsi untuk simpan/update data user Google ke Firestore
 export async function signInWithGoogle(userData: any, callback: any) {
   try {
-    // cek apakah email sudah ada di database/blm
-    const q = query(
-      collection(db, "users"),
-      where("email", "==", userData.email),
-    );
-
-    const querySnapshot = await getDocs(q);
-    const data: any = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    // refactor: pakai getUserByEmail agar tidak duplikasi query
+    const data: any = await getUserByEmail(userData.email);
 
     if (data.length > 0) {
       // user sudah ada → ambil role lama lalu update data
       userData.role = data[0].role;
-      await updateDoc(doc(db, "users", data[0].id), userData);
+      // refactor: pakai updateUser agar tidak duplikasi updateDoc
+      await updateUser(data[0].id, userData);
       callback({
         status: true,
         message: "User registered and logged in with Google",
@@ -114,7 +117,8 @@ export async function signInWithGoogle(userData: any, callback: any) {
     } else {
       // user baru → set role member lalu simpan ke database
       userData.role = "member";
-      await addDoc(collection(db, "users"), userData);
+      // refactor: pakai saveUser agar tidak duplikasi addDoc
+      await saveUser(userData);
       callback({
         status: true,
         message: "User registered and logged in with Google",
