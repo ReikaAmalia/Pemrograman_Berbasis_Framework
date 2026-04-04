@@ -14,6 +14,20 @@ const Navbar = () => {
         {`document.getElementById('title').textContent = 'MyApp';`}
       </Script>
 
+            {/* Google Analytics menggunakan next/script */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+        strategy="lazyOnload"
+      />
+      <Script id="google-analytics" strategy="lazyOnload">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'GA_MEASUREMENT_ID');
+        `}
+      </Script>
+
       <div className={styles.navbar__right}>
         {data ? (
           <>
@@ -24,7 +38,7 @@ const Navbar = () => {
                   width={50}
                   height={50}
                   src={data.user.image}
-                  alt={data.user.fullname}
+                  alt="avatar"
                   className={styles.navbar__user__image}
                 />
               )}
