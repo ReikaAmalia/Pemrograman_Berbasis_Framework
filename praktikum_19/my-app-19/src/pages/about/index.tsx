@@ -1,7 +1,9 @@
-export default function About() {
+const AboutPage = () => {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Ini Halaman About</h1>
+    <div>
+      <h1 data-testid="title">About Page</h1>
     </div>
   );
 }
+
+export default AboutPage;
