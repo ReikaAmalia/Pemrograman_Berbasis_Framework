@@ -8,6 +8,7 @@ import {
   addDoc,
   where,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import app from "./firebase";
 import bcrypt from "bcrypt";
@@ -49,6 +50,10 @@ export async function saveUser(userData: any) {
 // fungsi reusable untuk update data user di database
 export async function updateUser(id: string, userData: any) {
   return await updateDoc(doc(db, "users", id), userData);
+}
+
+export async function deleteUser(id: string) {
+  return await deleteDoc(doc(db, "users", id));
 }
 
 export async function signIn(email: string) {
