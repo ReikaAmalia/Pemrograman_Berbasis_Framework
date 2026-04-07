@@ -1,0 +1,43 @@
+.error {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fef2f2; /* warna background lembut */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif; /* custom font */
+  text-align: center;
+}
+
+.error_title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #dc2626; /* merah */
+  margin-bottom: 16px;
+}
+
+.error_desc {
+  font-size: 18px;
+  color: #374151; /* abu gelap */
+  margin-bottom: 24px;
+}
+
+.error_image {
+  width: 300px;
+}
+
+.back_button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back_button:hover {
+  background-color: #1e40af;
+}
