@@ -1,14 +1,20 @@
-// import Link from "next/link";
 import Head from 'next/head'
-import Image from "next/image"
-import { Inter } from 'next/font/google'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import styles from '@/styles/Home.module.css'
-import Navbar from '@/components/index'
-import AppShell from '@/components/Appshell'
 
-const inter = Inter({ subsets: ['latin'] })
+type HomeProps = {
+  appName: string
+}
 
-export default function Home() {
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  return {
+    props: {
+      appName: process.env.APP_NAME ?? 'Tugas Paas Saya',
+    },
+  }
+}
+
+export default function Home({ appName }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
@@ -17,7 +23,8 @@ export default function Home() {
 
       <div>
         <h1>Praktikum Next.js Pages Router</h1>
-        <p>Mahasiswa D4 Pengembangan Web</p>
+        {/* <p>Mahasiswa D4 Pengembangan Web</p> */}
+        <p className={styles.appName}><strong>{appName}</strong></p>
       </div>
     </>
   );
